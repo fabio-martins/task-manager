@@ -1,10 +1,10 @@
 services:
   app:
+    command: bash -c "bundle exec rails db:prepare && bundle exec rails s -b 0.0.0.0"
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     container_name: app
     volumes:
-      - .:/usr/src/task_manager
+      - .:/usr/src/task-manager
     expose:
       - "3000"
     ports:
@@ -15,18 +15,17 @@ services:
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE: ${DATABASE}
       DATABASE_TEST: ${DATABASE_TEST}
-      DBUSER: ${DBUSER}
-      DBPASSWORD: ${DBPASSWORD}
+      DBUSER: ${POSTGRES_USER}
+      DBPASSWORD: ${POSTGRES_PASSWORD}
     depends_on:
-      - db
+      - database
     networks:
       - task_manager_network
-  db:
+  database:
     image: postgres:alpine
-    container_name: db
+    container_name: database
     volumes:
       - postgresql:/var/lib/postgresql/data
-      - $HOME/code/sig/sig-db:/bkp
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
