@@ -1,15 +1,22 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# test/fixtures/tasks.yml
 
 one:
-  title: MyString
-  description: MyText
-  status: MyString
-  user: one
-  due_date: 2025-05-02 10:04:13
+  title: "Complete the project"
+  description: "Finish the project by the end of the week. Ensure all features are covered."
+  status: "todo"
+  user: user_one
+  due_date: <%= 1.day.from_now %>  # 1 dia a partir de agora
 
 two:
-  title: MyString
-  description: MyText
-  status: MyString
-  user: two
-  due_date: 2025-05-02 10:04:13
+  title: "Start writing tests"
+  description: "Begin writing unit and integration tests for the new feature."
+  status: "in_progress"
+  user: user_two
+  due_date: <%= 2.days.from_now %>  # 2 dias a partir de agora
+
+three:
+  title: "Code review"
+  description: "Review pull requests and give feedback to the team."
+  status: "pending"
+  user: user_one
+  due_date: <%= 3.days.from_now %>  # 3 dias a partir de agora
