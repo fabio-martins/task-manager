@@ -1,0 +1,49 @@
+.min-h-screen.flex.items-center.justify-center.bg-gray-50.py-12.px-4.sm:px-6.lg:px-8
+  .max-w-md.w-full
+    .text-center
+      %svg.mx-auto.h-12.w-12.text-purple-600{:fill => "currentColor", :viewbox => "0 0 24 24"}
+        %path{:d => "M3.5 3.5c-.614-.884-.074-2.5 1-2.5h8c.673 0 1.5.673 1.5 1.5v8c0 .827-.673 1.5-1.5 1.5h-8c-1.074 0-1.614-1.616-1-2.5v-6zm2.5-.5h6v7h-6v-7zm-2.5 11.5c-.614-.884-.074-2.5 1-2.5h8c.673 0 1.5.673 1.5 1.5v8c0 .827-.673 1.5-1.5 1.5h-8c-1.074 0-1.614-1.616-1-2.5v-6zm2.5-.5h6v7h-6v-7zm11-8c0-.827.673-1.5 1.5-1.5h8c1.074 0 1.614 1.616 1 2.5v6c.614.884.074 2.5-1 2.5h-8c-.827 0-1.5-.673-1.5-1.5v-8zm2 .5v7h6v-7h-6zm-.5 11.5v-8c0-.827.673-1.5 1.5-1.5h8c1.074 0 1.614 1.616 1 2.5v6c.614.884.074 2.5-1 2.5h-8c-.827 0-1.5-.673-1.5-1.5zm2-.5v7h6v-7h-6z"}
+      %h2.mt-6.text-3xl.font-extrabold.text-gray-900 Create your account
+      %p.mt-2.text-sm.text-gray-600
+        Or
+        \#{link_to "sign in to your account", new_session_path(resource_name), class: "font-medium text-purple-600 hover:text-purple-500"}
+    .mt-8
+      = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6", data: { turbo: false } }) do |f|
+        - if resource.errors.any?
+          .rounded-md.bg-red-50.p-4
+            .flex
+              .flex-shrink-0
+                %svg.h-5.w-5.text-red-400{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
+                  %path{"clip-rule" => "evenodd", :d => "M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z", "fill-rule" => "evenodd"}
+              .ml-3
+                %h3.text-sm.font-medium.text-red-800
+                  = pluralize(resource.errors.count, "error")
+                  prohibited this registration:
+                .mt-2.text-sm.text-red-700
+                  %ul.list-disc.pl-5.space-y-1
+                    - resource.errors.full_messages.each do |message|
+                      %li= message
+        %div
+          = f.label :email, class: "block text-sm font-medium text-gray-700"
+          .mt-1
+            = f.email_field :email, autofocus: true, autocomplete: "email",                                                                                                                                 |
+              class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm", |
+              placeholder: "you@example.com"                                                                                                                                                                |
+        %div
+          = f.label :password, class: "block text-sm font-medium text-gray-700"
+          .mt-1
+            = f.password_field :password, autocomplete: "new-password",                                                                                                                                     |
+              class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm", |
+              placeholder: "••••••••"                                                                                                                                                                       |
+            - if @minimum_password_length
+              %p.mt-2.text-sm.text-gray-500
+                Minimum #{@minimum_password_length} characters
+        %div
+          = f.label :password_confirmation, class: "block text-sm font-medium text-gray-700"
+          .mt-1
+            = f.password_field :password_confirmation, autocomplete: "new-password",                                                                                                                        |
+              class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm", |
+              placeholder: "••••••••"                                                                                                                                                                       |
+        %div
+          = f.submit "Create account",                                                                                                                                                                                                              |
+            class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" |
