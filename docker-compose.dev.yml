@@ -1,7 +1,9 @@
 services:
   app:
     command: bash -c "bundle exec rails db:prepare && bundle exec rails s -b 0.0.0.0"
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: app
     volumes:
       - .:/usr/src/task-manager
@@ -29,13 +31,28 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_URL: ${REDIS_URL}
     ports:
       - "127.0.0.1:54321:5432"
     networks:
       - task_manager_network
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - task_manager_network
+
 volumes:
   postgresql:
+  redis_data:
+    driver: local
 
 networks:
   task_manager_network:
+    driver: bridge
