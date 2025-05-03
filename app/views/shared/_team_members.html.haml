@@ -1,0 +1,13 @@
+-# Team Members List
+.div.space-y-4
+  - User.all.each do |user|
+    .flex.items-center.gap-3
+      .relative
+        .h-10.w-10.rounded-full.bg-purple-100.flex.items-center.justify-center
+          %span.text-sm.font-medium.text-purple-600= user.email[0].upcase
+
+      .flex-1.min-w-0
+        %p.text-sm.font-medium.text-gray-900.truncate= user.email.split('@').first
+        %p.text-xs.text-gray-500.truncate
+          = pluralize(Task.where(assigned_to_id: user.id).count, 'task')
+          assigned
