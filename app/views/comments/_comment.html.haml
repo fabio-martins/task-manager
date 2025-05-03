@@ -1,0 +1,14 @@
+.flex.items-start.gap-3.py-3
+  .flex-shrink-0
+    .w-8.h-8.rounded-full.bg-purple-100.flex.items-center.justify-center
+      %span.text-sm.font-medium.text-purple-600
+        = comment.user.email.first.upcase
+  .flex-1.min-w-0
+    .flex.items-center.justify-between.gap-2
+      %p.text-sm.font-medium.text-gray-900
+        = comment.user.email
+      %span.text-xs.text-gray-500
+        = time_ago_in_words(comment.created_at)
+        ago
+    %p.mt-1.text-sm.text-gray-600
+      = comment.content

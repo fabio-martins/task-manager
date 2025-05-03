@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_task
   before_action :set_comment, only: [ :destroy ]
 
@@ -8,6 +9,7 @@ class CommentsController < ApplicationController
 
     if @comment.save
       respond_to do |format|
+        format.turbo_stream
         format.html { redirect_to @task }
       end
     else
@@ -18,6 +20,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
+      format.turbo_stream
       format.html { redirect_to @task }
     end
   end

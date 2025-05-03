@@ -1,0 +1,4 @@
+= turbo_stream.prepend "task_#{@task.id}_comments" do
+  = render @comment
+= turbo_stream.update "task_#{@task.id}_comment_count" do
+  (#{@task.comments.count})

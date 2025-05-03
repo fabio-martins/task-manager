@@ -1,0 +1,3 @@
+= turbo_stream.remove @comment
+= turbo_stream.update "task_#{@task.id}_comment_count" do
+  (#{@task.comments.count})
