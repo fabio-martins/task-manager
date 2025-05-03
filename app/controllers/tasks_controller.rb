@@ -1,8 +1,60 @@
 class TasksController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_task, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @tasks = Task.all
+    @tasks = Task.ordered
+
+    if params[:query].present?
+      @tasks = @tasks.search(params[:query])
+    end
+
+    if params[:status].present? && params[:status] != "all"
+      @tasks = @tasks.where(status: params[:status])
+    end
+
+    if params[:assign_to].present? && params[:assign_to] != "all"
+      if params[:assign_to] == "mine"
+        @tasks = @tasks.where(assigned_to_id: current_user.id)
+      elsif params[:assign_to] == "unassigned"
+        @tasks = @tasks.where(assigned_to_id: nil)
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update("tasks_list", partial: "tasks/list", locals: { tasks: @tasks })
+      end
+    end
+  end
+
+  def calendar
+    @tasks = Task.where(due_date: start_date..end_date)
+    @start_date = start_date
+
+    if params[:query].present?
+      @tasks = @tasks.search(params[:query])
+    end
+
+    if params[:status].present? && params[:status] != "all"
+      @tasks = @tasks.where(status: params[:status])
+    end
+
+    if params[:assign_to].present? && params[:assign_to] != "all"
+      if params[:assign_to] == "mine"
+        @tasks = @tasks.where(assigned_to_id: current_user.id)
+      elsif params[:assign_to] == "unassigned"
+        @tasks = @tasks.where(assigned_to_id: nil)
+      end
+    end
+
+    respond_to do |format|
+      format.html { render :index }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update("tasks_list", partial: "tasks/calendar", locals: { tasks: @tasks, start_date: @start_date })
+      end
+    end
   end
 
   def show
@@ -29,10 +81,8 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.update(task_params)
         format.html { redirect_to tasks_path, notice: "Task was successfully updated." }
-        format.turbo_stream { redirect_to tasks_path, notice: "Task was successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream { render :edit, status: :unprocessable_entity }
       end
     end
   end
@@ -50,5 +100,13 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:title, :description, :status, :due_date, :assigned_to_id)
+  end
+
+  def start_date
+    params.fetch(:start_date, Date.current.beginning_of_month).to_date
+  end
+
+  def end_date
+    params.fetch(:end_date, Date.current.end_of_month).to_date
   end
 end

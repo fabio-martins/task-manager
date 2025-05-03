@@ -1,0 +1,24 @@
+.mt-8
+  .flex.items-center.justify-between.mb-4
+    %h3.text-lg.font-medium.text-gray-900
+      Comments
+      %span.ml-1.text-sm.text-gray-500{:id => "task_#{task.id}_comment_count"}
+        (#{task.comments.count})
+  #task_comments.space-y-4.mb-6
+    = render task.comments.ordered
+  .bg-white.shadow.sm:rounded-lg
+    .px-4.py-5.sm:p-6
+      = form_with(model: [task, Comment.new],          |
+        data: {                                        |
+          controller: "reset-form",                    |
+          action: "turbo:submit-end->reset-form#reset" |
+        },                                             |
+        class: "space-y-4") do |f|                     |
+        %div
+          = f.text_area :content,                                                                                                                                                                                          |
+            rows: 3,                                                                                                                                                                                                       |
+            placeholder: "Add a comment...",                                                                                                                                                                               |
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" |
+        .flex.justify-end
+          = f.submit "Post Comment",                                                                                                                                                                                                 |
+            class: "rounded-md bg-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600" |

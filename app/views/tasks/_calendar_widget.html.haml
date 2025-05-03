@@ -1,0 +1,22 @@
+.bg-white.rounded-lg.border.border-gray-200.shadow-sm.p-6
+  .flex.items-center.gap-2.mb-4
+    %svg.h-5.w-5.text-purple-600{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
+      %path{"clip-rule" => "evenodd", :d => "M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z", "fill-rule" => "evenodd"}
+    %h2.text-lg.font-semibold.text-gray-900 Upcoming Tasks
+  .space-y-2
+    - next_due_date = tasks.where("due_date >= ?", Date.current).order(:due_date).limit(1).pick(:due_date)
+    - if next_due_date.present?
+      - tasks.where(due_date: next_due_date).order(:due_date).each do |task|
+        = link_to edit_task_path(task),                                                                       |
+          class: "flex items-center gap-2 p-2 rounded hover:bg-gray-50 transition-colors duration-150 group", |
+          data: { turbo_frame: "_top" } do                                                                    |
+          %div{:class => "w-1 h-full min-h-[2.5rem] rounded #{task_status_color(task)}"}
+          .min-w-0.flex-1
+            .flex.items-center.justify-between.gap-2
+              %p.text-sm.text-gray-900.font-medium.truncate.group-hover:text-purple-600= task.title
+              %span.text-xs.text-gray-500.whitespace-nowrap= task.due_date.strftime("%d/%m")
+            %p.text-xs.text-gray-500{:class => "mt-0.5"}
+              = task.status.humanize
+    - else
+      .text-center.py-4
+        %p.text-sm.text-gray-500 No upcoming tasks

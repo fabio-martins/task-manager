@@ -1,0 +1,46 @@
+.bg-white.rounded-lg.shadow
+  .flex.items-center.justify-between.px-6.py-4.border-b.border-gray-200
+    .flex.items-center.gap-2
+      %h2.text-lg.font-semibold.text-gray-900= start_date.strftime("%B %Y")
+    .flex.items-center.gap-1
+      = link_to calendar_tasks_path(start_date: start_date.prev_month),                                             |
+        class: "p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-150", |
+        data: { turbo_frame: "_top" } do                                                                            |
+        %svg.h-5.w-5{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
+          %path{"clip-rule" => "evenodd", :d => "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z", "fill-rule" => "evenodd"}
+      = link_to calendar_tasks_path(start_date: start_date.next_month),                                             |
+        class: "p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-150", |
+        data: { turbo_frame: "_top" } do                                                                            |
+        %svg.h-5.w-5{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
+          %path{"clip-rule" => "evenodd", :d => "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z", "fill-rule" => "evenodd"}
+  .grid.grid-cols-7.gap-px.bg-gray-200
+    - %w[Sun Mon Tue Wed Thu Fri Sat].each do |day|
+      .bg-gray-50.px-4.py-2
+        %span.text-sm.font-medium.text-gray-900= day
+    - date = start_date.beginning_of_month.beginning_of_week
+    - while date <= start_date.end_of_month.end_of_week do
+      %div{:class => "min-h-[120px] bg-white px-4 py-2 #{date.month == start_date.month ? '' : 'bg-gray-50'}"}
+        .flex.items-center.justify-between
+          %span{:class => "text-sm #{date.month == start_date.month ? 'text-gray-900' : 'text-gray-400'}"}
+            = date.day
+          - if date.today?
+            %span.inline-flex.h-6.w-6.items-center.justify-center.rounded-full.bg-purple-100.text-xs.font-medium.text-purple-600
+              Today
+        .mt-2.space-y-1
+          - tasks.select { |task| task.due_date == date }.each do |task|
+            = link_to edit_task_path(task),    |
+              class: "block text-sm",          |
+              data: { turbo_frame: "_top" } do |
+              %div{:class => "rounded px-2 py-1 #{task_status_classes(task.status)}"}
+                %p.truncate= task.title
+      - date = date.next_day
+  .border-t.border-gray-200.mt-4
+    .p-6
+      %h3.text-sm.font-medium.text-gray-900.mb-3 Upcoming Deadlines
+      .space-y-3
+        - tasks.where("due_date >= ?", Date.current).order(:due_date).limit(3).each do |task|
+          .flex.items-start.gap-3.p-3.rounded-lg.bg-gray-50
+            %div{:class => "w-1 self-stretch rounded #{task_status_color(task)}"}
+            %div
+              %h4.text-sm.font-medium.text-gray-900= task.title
+              %p.text-xs.text-gray-500= task.due_date.strftime("%b %d, %Y")
