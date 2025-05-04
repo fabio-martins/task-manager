@@ -78,18 +78,28 @@ class TasksController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to tasks_path, notice: "Task was successfully updated." }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-      end
+    if @task.update(task_params)
+      redirect_to tasks_path, notice: "Task was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @task.destroy
     redirect_to tasks_url, notice: "Task was successfully deleted."
+  end
+
+  def generate_description
+    title = params[:title].to_s.strip
+    prompt = "Generate a detailed description for the following task: '#{title}'" if title.present?
+
+    service = AiServices::OpenAiChatService.call(prompt: prompt)
+    if service.success?
+      render json: { description: service.data[:result] }, root: "description", adapter: :json
+    else
+      render json: { error: service.data[:errors] }, status: :unprocessable_entity
+    end
   end
 
   private
