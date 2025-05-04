@@ -23,8 +23,6 @@ module AiServices
         }
       )
 
-binding.pry
-
       response.dig("choices", 0, "message", "content")
     rescue OpenAI::Error => e
       Rails.logger.warn("[OpenAiChatService]: #{e.message}")
