@@ -4,6 +4,9 @@ set -e
 #rails db:create 2> /dev/null
 rails db:migrate
 
+# Precompile assets
+rails assets:precompile
+
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f tmp/pids/server.pid
 
