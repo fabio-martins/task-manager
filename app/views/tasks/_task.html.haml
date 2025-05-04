@@ -1,4 +1,4 @@
-.bg-white.shadow.sm:rounded-lg{:id => "task_#{task.id}"}
+.bg-white.shadow.sm:rounded-lg{:id => "task_#{task.id}", class: ("task-card-new" if defined?(new_task_id) && new_task_id == task.id)}
   .px-4.py-5.sm:p-6
     .flex.items-center.justify-between
       %h3.text-base.font-semibold.leading-6.text-gray-900

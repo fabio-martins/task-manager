@@ -39,12 +39,17 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = current_user.tasks.build(task_params)
+    respond_to do |format|
+      @task = current_user.tasks.build(task_params)
 
-    if @task.save
-      redirect_to tasks_path, notice: "Task was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+      if @task.save
+        format.html { redirect_to tasks_path, notice: "Task was successfully created." }
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { notice: "Task was successfully created." })
+          end
+      else
+          render :new, status: :unprocessable_entity
+      end
     end
   end
 
@@ -52,10 +57,15 @@ class TasksController < ApplicationController
   end
 
   def update
-    if @task.update(task_params)
-      redirect_to tasks_path, notice: "Task was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @task.update(task_params)
+        format.html { redirect_to tasks_path, notice: "Task was successfully updated." }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { notice: "Task was successfully updated." })
+        end
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+      end
     end
   end
 
