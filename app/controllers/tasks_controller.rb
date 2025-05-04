@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @tasks = Task.filter_by_scopes(params.slice(:search, :with_status, :assigned_to)).ordered
+    @tasks = Task.filter_by_scopes(params.slice(:search, :with_status, :assigned_to)).ordered.page(params[:page]).per(10)
 
     respond_to do |format|
       format.html
