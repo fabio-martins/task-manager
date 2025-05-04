@@ -1,19 +1,19 @@
 .flex.items-center.justify-between.mb-6
   .flex.items-center.gap-2
     = form_with(url: request.path, method: :get, data: { turbo_frame: "tasks_list", controller: "auto-submit" }) do |f|
-      = f.hidden_field :query, value: params[:query] if params[:query].present?
+      = f.hidden_field :search, value: params[:search] if params[:search].present?
       .flex.items-center.gap-2
         .relative
           .pointer-events-none.absolute.inset-y-0.left-0.flex.items-center.pl-3
             %svg.h-5.w-5.text-gray-400{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
               %path{"clip-rule" => "evenodd", :d => "M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z", "fill-rule" => "evenodd"}
-          = f.select :status,                                                                                                                                                                                                                                                |
+          = f.select :with_status,                                                                                                                                                                                                                                                |
             options_for_select([                                                                                                                                                                                                                                             |
               ["All Status", "all"],                                                                                                                                                                                                                                         |
               ["Todo", "todo"],                                                                                                                                                                                                                                              |
               ["In Progress", "in_progress"],                                                                                                                                                                                                                                |
               ["Completed", "completed"]                                                                                                                                                                                                                                     |
-            ], params[:status]),                                                                                                                                                                                                                                             |
+            ], params[:with_status]),                                                                                                                                                                                                                                             |
             {},                                                                                                                                                                                                                                                              |
             class: "appearance-none pl-10 pr-10 py-2 text-sm border-gray-200 bg-white rounded-lg text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-purple-500 focus:ring-purple-500 transition duration-150 ease-in-out", |
             data: { action: "change->auto-submit#submit" }                                                                                                                                                                                                                   |
@@ -24,8 +24,8 @@
           .pointer-events-none.absolute.inset-y-0.left-0.flex.items-center.pl-3
             %svg.h-5.w-5.text-gray-400{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
               %path{"clip-rule" => "evenodd", :d => "M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z", "fill-rule" => "evenodd"}
-          = f.select :assign_to,                                                                                                                                                                                                                                                |
-            options_for_select([ ["All team", "all"], ["My tasks", "mine"], ["Unassigned", "unassigned"] ], params[:assign_to]), {},
+          = f.select :assigned_to,                                                                                                                                                                                                                                                |
+            options_for_select(  [ ["All team", "0"] ] + User.all.map { |u| [u.email, u.id] }, params[:assigned_to]), {},
             class: "appearance-none pl-10 pr-10 py-2 text-sm border-gray-200 bg-white rounded-lg text-gray-700 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-purple-500 focus:ring-purple-500 transition duration-150 ease-in-out",
             data: { action: "change->auto-submit#submit" }
           .pointer-events-none.absolute.inset-y-0.right-0.flex.items-center.pr-3
@@ -37,7 +37,6 @@
       .pointer-events-none.absolute.inset-y-0.left-0.flex.items-center.pl-3
         %svg.h-5.w-5.text-gray-400{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
           %path{"clip-rule" => "evenodd", :d => "M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z", "fill-rule" => "evenodd"}
-      = f.text_field :query,                                                                                                                                                                                       |
-        value: params[:query],                                                                                                                                                                                     |
+      = f.text_field :search, value: params[:search],                                                                                                                                                                                     |
         placeholder: "Search tasks...",                                                                                                                                                                            |
         class: "block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" |

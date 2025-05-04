@@ -3,23 +3,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @tasks = Task.ordered
-
-    if params[:query].present?
-      @tasks = @tasks.search(params[:query])
-    end
-
-    if params[:status].present? && params[:status] != "all"
-      @tasks = @tasks.where(status: params[:status])
-    end
-
-    if params[:assign_to].present? && params[:assign_to] != "all"
-      if params[:assign_to] == "mine"
-        @tasks = @tasks.where(assigned_to_id: current_user.id)
-      elsif params[:assign_to] == "unassigned"
-        @tasks = @tasks.where(assigned_to_id: nil)
-      end
-    end
+    @tasks = Task.filter_by_scopes(params.slice(:search, :with_status, :assigned_to)).ordered
 
     respond_to do |format|
       format.html
@@ -30,29 +14,19 @@ class TasksController < ApplicationController
   end
 
   def calendar
-    @tasks = Task.where(due_date: start_date..end_date)
     @start_date = start_date
-
-    if params[:query].present?
-      @tasks = @tasks.search(params[:query])
-    end
-
-    if params[:status].present? && params[:status] != "all"
-      @tasks = @tasks.where(status: params[:status])
-    end
-
-    if params[:assign_to].present? && params[:assign_to] != "all"
-      if params[:assign_to] == "mine"
-        @tasks = @tasks.where(assigned_to_id: current_user.id)
-      elsif params[:assign_to] == "unassigned"
-        @tasks = @tasks.where(assigned_to_id: nil)
-      end
-    end
+    @tasks = Task.with_due_date_between(@start_date, end_date)
+                 .filter_by_scopes(params.slice(:search, :with_status, :assigned_to))
+                 .ordered
 
     respond_to do |format|
       format.html { render :index }
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update("tasks_list", partial: "tasks/calendar", locals: { tasks: @tasks, start_date: @start_date })
+        render turbo_stream: turbo_stream.update(
+          "tasks_list",
+          partial: "tasks/calendar",
+          locals: { tasks: @tasks, start_date: @start_date }
+        )
       end
     end
   end

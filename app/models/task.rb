@@ -1,4 +1,6 @@
 class Task < ApplicationRecord
+  include Filterable
+
   belongs_to :user
   belongs_to :assigned_to, class_name: "User", optional: true
   has_many :comments, dependent: :destroy
@@ -9,6 +11,13 @@ class Task < ApplicationRecord
 
   scope :ordered, -> { order(due_date: :asc) }
   scope :search, ->(query) { where("title ILIKE :query OR description ILIKE :query", query: "%#{query}%") }
+  scope :assigned_to, ->(user_id) { user_id.to_i.zero? ? all : where(assigned_to_id: user_id) }
+  scope :with_due_date_between, ->(start_date, end_date) { where(due_date: start_date..end_date) }
+
+  scope :with_status, ->(status) {
+    return all if status == "all" || status.blank?
+    where(status: status)
+  }
 
   def status_color
     case status

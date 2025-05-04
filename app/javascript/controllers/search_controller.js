@@ -23,7 +23,7 @@ export default class extends Controller {
 
   performSearch() {
     const query = this.inputTarget.value
-    const url = `/tasks?query=${encodeURIComponent(query)}`
+    const url = `/tasks?search=${encodeURIComponent(query)}`
     
     fetch(url, {
       headers: {
