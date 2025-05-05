@@ -2,7 +2,7 @@
 .min-h-screen.bg-gray-50.py-8
   .max-w-7xl.mx-auto.px-4.sm:px-6.lg:px-8
     / Main Content
-    .flex.gap-6
+    .flex.flex-col.md:flex-row.gap-6
       / Tasks List
       .flex-1
         .bg-white.rounded-lg.border.border-gray-200.shadow-sm
@@ -13,13 +13,13 @@
                 .flex.items-center.space-x-4
                   / View Toggle
                   .flex.rounded-lg.shadow-sm
-                    = link_to tasks_path,                                                                                                                                                                                                               |
-                      class: "relative inline-flex items-center px-4 py-2 rounded-l-lg border #{current_page?(tasks_path) ? 'bg-purple-50 border-purple-200 text-purple-600 z-10' : 'bg-white border-gray-200 text-gray-500 hover:text-purple-600'}" do |
+                    = link_to tasks_path,
+                      class: "relative inline-flex items-center px-4 py-2 rounded-l-lg border #{current_page?(tasks_path) ? 'bg-purple-50 border-purple-200 text-purple-600 z-10' : 'bg-white border-gray-200 text-gray-500 hover:text-purple-600'}" do
                       %svg.h-5.w-5{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
                         %path{"clip-rule" => "evenodd", :d => "M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z", "fill-rule" => "evenodd"}
                       %span.ml-2 List
-                    = link_to calendar_tasks_path,                                                                                                                                                                                                                      |
-                      class: "relative -ml-px inline-flex items-center px-4 py-2 rounded-r-lg border #{current_page?(calendar_tasks_path) ? 'bg-purple-50 border-purple-200 text-purple-600 z-10' : 'bg-white border-gray-200 text-gray-500 hover:text-purple-600'}" do |
+                    = link_to calendar_tasks_path,
+                      class: "relative -ml-px inline-flex items-center px-4 py-2 rounded-r-lg border #{current_page?(calendar_tasks_path) ? 'bg-purple-50 border-purple-200 text-purple-600 z-10' : 'bg-white border-gray-200 text-gray-500 hover:text-purple-600'}" do
                       %svg.h-5.w-5{:fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
                         %path{"clip-rule" => "evenodd", :d => "M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z", "fill-rule" => "evenodd"}
                       %span.ml-2 Calendar
@@ -38,7 +38,7 @@
                 = render "tasks/filters"
                 = render "tasks/list", tasks: @tasks
       / Sidebar
-      .w-96.space-y-6
+      .w-full.md:w-96.space-y-6
         / Upcoming Tasks
         = render "tasks/calendar_widget", tasks: @tasks
         / Team Members Widget
