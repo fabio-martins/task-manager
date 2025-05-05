@@ -14,9 +14,6 @@
                 .h-5.w-5.rounded-full.border-2.border-gray-200
             .flex.items-center.gap-2
               %h3.text-lg.font-semibold.text-purple-600= task.title
-              - if task.user != current_user
-                %span.text-sm.text-gray-500
-                  by #{task.user.email}
               - case task.status
               - when "in_progress"
                 %span.px-2.text-xs.font-medium.rounded-full.bg-amber-50.text-amber-700.border.border-amber-100{:class => "py-0.5"}
@@ -48,6 +45,11 @@
           =task.description
       .flex.items-center.justify-between.mt-4
         .flex.items-center.gap-6
+          .text-sm.text-gray-500
+            - if task.user != current_user
+              %span.text-sm.text-gray-500
+                %span.font-medium Assigned to:
+                #{task.user.email}
           .text-sm.text-gray-500
             - if task.due_date.present?
               %span.font-medium Due:
