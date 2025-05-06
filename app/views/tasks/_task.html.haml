@@ -24,7 +24,7 @@
     .flex.items-center.gap-2
       - if task.assigned_to.present?
         .flex.-space-x-1
-          .h-6.w-6.rounded-full.bg-gray-100.border-2.border-white.flex.items-center.justify-center
+          .h-6.w-6.rounded-full.bg-gray-100.border-2.border-white.flex.items-center.justify-center{ title: task.assigned_to.email }
             %span.text-xs.font-medium.text-gray-600= task.assigned_to.email[0].upcase
       = link_to edit_task_path(task),                                                                                 |
         class: "p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-full transition-all duration-150", |
