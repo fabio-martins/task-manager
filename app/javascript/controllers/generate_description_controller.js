@@ -37,7 +37,6 @@ export default class extends Controller {
       const data = await response.json()
       this.descriptionTarget.value = data.description
     } catch (e) {
-      alert("Erro ao gerar descrição.")
     } finally {
       this.toggleButton()
     }
