@@ -85,7 +85,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to tasks_url, notice: "Task was successfully deleted."
+    redirect_to tasks_url
   end
 
   def generate_description

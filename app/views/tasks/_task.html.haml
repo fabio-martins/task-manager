@@ -55,7 +55,10 @@
           %svg.h-5.w-5{:fill => "currentColor", :viewBox => "0 0 24 24", :xmlns => "http://www.w3.org/2000/svg"}
             %path{:d => "M20 17.17V5a2 2 0 00-2-2H6a2 2 0 00-2 2v14l4-4h10a2 2 0 002-2z"}
           %span.font-medium
-            Comments (#{task.comments.count rescue 0})
+            Comments
+            = turbo_stream_from "task_#{task.id}_comment_count"
+            %span.ml-1.text-sm.text-gray-500{:id => "task_#{task.id}_comment_count"}
+              = render "tasks/comment_count", task: task
         %svg.h-5.w-5.transition-transform.duration-200{"data-comment-form-target" => "toggleIcon", :fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
           %path{"clip-rule" => "evenodd", :d => "M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z", "fill-rule" => "evenodd"}
     = turbo_stream_from "task_#{task.id}_comments"        

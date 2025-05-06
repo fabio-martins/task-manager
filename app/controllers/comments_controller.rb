@@ -17,14 +17,6 @@ class CommentsController < ApplicationController
     end
   end
 
-  def destroy
-    @comment.destroy
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to @task }
-    end
-  end
-
   private
 
   def set_task

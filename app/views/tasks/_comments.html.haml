@@ -1,11 +1,12 @@
+= turbo_stream_from "task_#{task.id}_comments"
 .mt-8
   .flex.items-center.justify-between.mb-4
     %h3.text-lg.font-medium.text-gray-900
       Comments
+      = turbo_stream_from "task_#{task.id}_comment_count"
       %span.ml-1.text-sm.text-gray-500{:id => "task_#{task.id}_comment_count"}
-        (#{task.comments.count})
-  #task_comments.space-y-4.mb-6
-    = render task.comments.ordered
+        = render "tasks/comment_count", task: task
+  = render "tasks/comments_list", task: task
   .bg-white.shadow.sm:rounded-lg
     .px-4.py-5.sm:p-6
       = form_with(model: [task, Comment.new],          |
