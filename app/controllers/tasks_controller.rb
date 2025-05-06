@@ -8,7 +8,10 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update("tasks_list", partial: "tasks/list", locals: { tasks: @tasks })
+        render turbo_stream: [
+          turbo_stream.update("tasks_list", partial: "tasks/list", locals: { tasks: @tasks }),
+          turbo_stream.replace("flash", partial: "shared/flash")
+        ]
       end
     end
   end
@@ -22,11 +25,14 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { render :index }
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update(
-          "tasks_list",
-          partial: "tasks/calendar",
-          locals: { tasks: @tasks, start_date: @start_date }
-        )
+        render turbo_stream: [
+          turbo_stream.update(
+            "tasks_list",
+            partial: "tasks/calendar",
+            locals: { tasks: @tasks, start_date: @start_date }
+          ),
+          turbo_stream.replace("flash", partial: "shared/flash")
+        ]
       end
     end
   end
@@ -44,11 +50,15 @@ class TasksController < ApplicationController
 
       if @task.save
         format.html { redirect_to tasks_path, notice: "Task was successfully created." }
-          format.turbo_stream do
-            render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { notice: "Task was successfully created." })
-          end
+        format.turbo_stream do
+          flash.now[:notice] = "Task was successfully created."
+          render turbo_stream: [
+            turbo_stream.replace("flash", partial: "shared/flash"),
+            turbo_stream.update("tasks_list", partial: "tasks/list", locals: { tasks: Task.all.ordered })
+          ]
+        end
       else
-          render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_entity
       end
     end
   end
@@ -61,7 +71,11 @@ class TasksController < ApplicationController
       if @task.update(task_params)
         format.html { redirect_to tasks_path, notice: "Task was successfully updated." }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { notice: "Task was successfully updated." })
+          flash.now[:notice] = "Task was successfully updated."
+          render turbo_stream: [
+            turbo_stream.replace("flash", partial: "shared/flash"),
+            turbo_stream.update("tasks_list", partial: "tasks/list", locals: { tasks: Task.all.ordered })
+          ]
         end
       else
         format.html { render :edit, status: :unprocessable_entity }
