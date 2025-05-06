@@ -1,5 +1,5 @@
 = turbo_stream_from "task_#{task.id}_comments"
 = turbo_stream_from "task_#{task.id}_comment_count"
 .space-y-4{:id => "task_#{task.id}_comments"}
-  - task.comments.order(created_at: :desc).each do |comment|
+  - task.comments.order(created_at: :asc).each do |comment|
     = render "comments/comment", comment: comment
