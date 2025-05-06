@@ -28,7 +28,8 @@
                   = link_to new_task_path, class: "inline-flex items-center gap-x-2 rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2" do
                     %svg.h-5.w-5{:class => "-ml-0.5", :fill => "currentColor", :viewbox => "0 0 20 20", :xmlns => "http://www.w3.org/2000/svg"}
                       %path{"clip-rule" => "evenodd", :d => "M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z", "fill-rule" => "evenodd"}
-                    New Task
+                    %span.sm:hidden New
+                    %span.hidden.sm:inline New Task
           / Content
           .p-6
             - if current_page?(calendar_tasks_path)
