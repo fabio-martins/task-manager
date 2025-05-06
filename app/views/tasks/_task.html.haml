@@ -73,12 +73,12 @@
               .h-8.w-8.rounded-full.bg-purple-100.flex.items-center.justify-center
                 %span.text-sm.font-medium.text-purple-600= current_user.email[0].upcase rescue "U"
             .flex-1
-              = f.text_area :content,                                                                                                                                                                                                                        |
-                placeholder: "Write a comment...",                                                                                                                                                                                                           |
-                class: "w-full rounded-lg border-0 bg-white py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm shadow-sm transition duration-150 ease-in-out", |
-                rows: 2                                                                                                                                                                                                                                      |
-            .mt-2.flex.justify-end.space-x-3
-              %button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-white.border.border-gray-300.rounded-md.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-purple-500.transition.duration-150.ease-in-out{"data-action" => "click->comment-form#toggle", :type => "button"}
-                Cancel
-              = f.submit "Comment",                                                                                                                                                                                                    |
-                class: "px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-sm transition duration-150 ease-in-out" |
+              = f.text_area :content,
+                placeholder: "Write a comment...",
+                class: "w-full rounded-lg border-0 bg-white py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm shadow-sm transition duration-150 ease-in-out",
+                rows: 2
+              .mt-2.flex.justify-end.space-x-3
+                %button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-white.border.border-gray-300.rounded-md.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-purple-500.transition.duration-150.ease-in-out{"data-action" => "click->comment-form#toggle", :type => "button"}
+                  Cancel
+                = f.submit "Comment",
+                  class: "px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-sm transition duration-150 ease-in-out"
