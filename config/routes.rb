@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   # Mount Action Cable server
   mount ActionCable.server => "/cable"
 
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: "users/sessions"
+  }
 
   root "tasks#index"
 
