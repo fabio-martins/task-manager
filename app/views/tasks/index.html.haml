@@ -31,12 +31,13 @@
                     New Task
           / Content
           .p-6
-            = turbo_frame_tag "tasks_list" do
-              - if current_page?(calendar_tasks_path)
-                = render "tasks/calendar", tasks: @tasks, start_date: @start_date
-              - else
-                = render "tasks/filters"
-                = render "tasks/list", tasks: @tasks
+            - if current_page?(calendar_tasks_path)
+              = render "tasks/calendar", tasks: @tasks, start_date: @start_date
+            - else
+              = render "tasks/filters"
+              = render "tasks/list", tasks: @tasks
+              = paginate @tasks
+
       / Sidebar
       .w-full.md:w-96.space-y-6
         / Upcoming Tasks

@@ -19,6 +19,10 @@ class Task < ApplicationRecord
     where(status: status)
   }
 
+  after_create_commit -> { broadcast_prepend_to "tasks", partial: "tasks/task", locals: { task: self }, target: "tasks_list" }
+  after_update_commit -> { broadcast_replace_to "tasks", partial: "tasks/list", locals: { tasks: Task.all.ordered }, target: "tasks_list" }
+  after_destroy_commit -> { broadcast_remove_to "tasks" }
+
   def status_color
     case status
     when "todo" then "gray"
