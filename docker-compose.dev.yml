@@ -14,11 +14,13 @@ services:
     stdin_open: true
     tty: true
     environment:
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE: ${DATABASE}
-      DATABASE_TEST: ${DATABASE_TEST}
-      DBUSER: ${POSTGRES_USER}
-      DBPASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST:-database}
+      DATABASE: ${DATABASE:-task_manager_development}
+      DATABASE_TEST: ${DATABASE_TEST:-task_manager_test}
+      DBUSER: ${POSTGRES_USER:-postgres}
+      DBPASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     depends_on:
       - database
     networks:
@@ -31,8 +33,6 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      REDIS_URL: ${REDIS_URL}
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
     ports:
       - "127.0.0.1:54321:5432"
     networks:
