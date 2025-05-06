@@ -1,0 +1,4 @@
+notify_task_deadline:
+  cron: "0 6 * * *"
+  class: "NotifyTaskDeadlineJob"
+  queue: default 

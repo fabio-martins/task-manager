@@ -1,0 +1,3 @@
+<p>Hello <%= @task.assigned_to.email %>,</p>
+<p>The task "<strong><%= @task.title %></strong>" is due on <strong><%= @task.due_date.strftime('%d/%m/%Y') %></strong>.</p>
+<p>Don't forget to complete it!</p>
