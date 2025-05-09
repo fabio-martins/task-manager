@@ -1,6 +1,6 @@
 # 🐳 Running the Project with Docker
 
-This project uses Docker to streamline the development environment. You can spin up all required services using Docker Compose.
+This project uses Docker to streamline the development environment. You can spin up all required services using Docker Compose. You can access the application at this link: [App Demo](https://task-manager-1s97.onrender.com)
 
 ## 📦 Prerequisites
 
